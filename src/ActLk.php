@@ -39,12 +39,15 @@ final class ActLk implements Action
         $this->pdo->quote("Test string!");
 
         //  login and password are ok
+        $notes = $this->pdo->query("SELECT * FROM notes")->fetchAll();
 
         return $resp->withBody(
             "Hello: " . $this->sess->get('login') . "<br>" .
             '<a href="/logout">logout</a><br>' .
             'Config var dbname=' . $this->config->param('dbname') . "<br>" .
-            'Config var dbname=' . $this->cfgDbname->val()
+            'Config var dbname=' . $this->cfgDbname->val() . 
+            "<h1>{$notes[0]['title']}</h1>" . 
+            "<p>{$notes[0]['text']}</p>"
         );
     }
 }
