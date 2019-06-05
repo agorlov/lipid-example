@@ -10,10 +10,15 @@ With template engine ``Twig``.
 
 - login/logout
 - add note
+@todo #1 Add note screen
 - remove note
+@todo #1 Remove note action
 - upload image
+@todo #1 Upload image
 - upload file
+@todo #1 Upload file in formats: zip/pdf/xlsx/docx
 - search note
+@todo #1 Search notes screen and form
 
 ### Installation
 
