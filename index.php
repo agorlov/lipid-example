@@ -8,19 +8,22 @@
 
 require_once './vendor/autoload.php';
 
-use Lipid\App\ApplicationStd;
-use Lipid\Response\RespStd;
 use ExampleApp\ActIndexTwig;
 use ExampleApp\ActLogin;
 use ExampleApp\ActLogout;
-use ExampleApp\ActLk;
+use ExampleApp\ActNote;
+use Lipid\App\ApplicationStd;
+use Lipid\Response\RespStd;
 
 (new ApplicationStd(
     [
         '/' => new ActIndexTwig(),
         '/login' => new ActLogin(),
         '/logout' => new ActLogout(),
-        '/lk' => new ActLk(),
+        '/note' => new ActNote(),
+        // '/create' => new ActCreateNote(),
+        // '/edit' => new ActEditNote(),
+        // '/notes' => new ActNotes(),
     ],
     new RespStd
 ))->start();

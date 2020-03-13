@@ -30,13 +30,18 @@ CREATE TABLE `notes` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+ALTER TABLE `notes`
+CHANGE `text` `text` mediumtext COLLATE 'utf8_general_ci' NOT NULL AFTER `title`,
+ADD `dateadd` datetime NOT NULL;
+
 --
 -- Dumping data for table `notes`
 --
 
 LOCK TABLES `notes` WRITE;
 /*!40000 ALTER TABLE `notes` DISABLE KEYS */;
-INSERT INTO `notes` VALUES (1,'First','It\'s first record.');
+INSERT INTO `notes` VALUES (1,'First','It\'s first record.', '2020-03-13 19:11:00');
+
 /*!40000 ALTER TABLE `notes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
