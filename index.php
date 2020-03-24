@@ -8,16 +8,20 @@
 
 require_once './vendor/autoload.php';
 
-use ExampleApp\ActIndexTwig;
 use ExampleApp\ActLogin;
 use ExampleApp\ActLogout;
 use ExampleApp\ActNote;
+use ExampleApp\ActNotes;
 use Lipid\App\ApplicationStd;
 use Lipid\Response\RespStd;
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 (new ApplicationStd(
     [
-        '/' => new ActIndexTwig(),
+        '/' => new ActNotes(),
         '/login' => new ActLogin(),
         '/logout' => new ActLogout(),
         '/note' => new ActNote(),

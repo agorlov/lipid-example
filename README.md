@@ -10,7 +10,6 @@ With template engine ``Twig``.
 
 - login/logout
 - add note
-@todo #1 Add note screen
 - remove note
 @todo #1 Remove note action
 - upload image

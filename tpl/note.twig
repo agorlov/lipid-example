@@ -3,7 +3,12 @@
 
 {% block container %}
 
-Заметки > Новая
+<nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+        <li><a href="/">Заметки</a></li>
+        <li class="is-active"><a href="/note">{{ title|default('Новая') }}</a></li>
+    </ul>
+</nav>
 
 <form method="POST" action="">
 
@@ -27,7 +32,7 @@
         </div>
     </div>
 
-    <input type="submit" name="Сохранить" class="button is-primary">
+    <input type="submit" value="Сохранить" class="button is-primary">
 </form>
 {% endblock %}
 
