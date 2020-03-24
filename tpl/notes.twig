@@ -1,0 +1,69 @@
+{# Notes list #}
+{% extends 'layout.twig' %}
+
+{% block container %}
+
+<nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+        <li class="is-active"><a href="/">Заметки</a></li>
+    </ul>
+</nav>
+
+
+
+<div class="level">
+    <div class="level-left">
+        <h1 class="title">Заметки</h1>
+    </div>
+    <div class="level-right">
+        <a href="/note" class="button is-link is-light">Написать заметку</a>
+    </div>
+</div>
+
+
+{% for note in notes %}
+<article class="media">
+    <figure class="media-left">
+        <p class="image is-64x64">
+            <img src="https://bulma.io/images/placeholders/128x128.png">
+        </p>
+    </figure>
+
+    <div class="media-content">
+        <div class="content">
+            <a href="/note?id={{ note.id }}" class="has-text-dark">
+            <p>
+                <strong>{{ note.title }}</strong> {#<small>@johnsmith</small>#}
+                <br>
+                {{ (note.text|striptags)|slice(0,100) }}
+            </p>
+            </a>
+        </div>
+        <nav class="level is-mobile">
+            <div class="level-left">
+{#                <a class="level-item">#}
+{#                    <span class="icon is-small"><i class="fas fa-reply"></i></span>#}
+{#                </a>#}
+{#                <a class="level-item">#}
+{#                    <span class="icon is-small"><i class="fas fa-retweet"></i></span>#}
+{#                </a>#}
+{#                <a class="level-item">#}
+{#                    <span class="icon is-small"><i class="fas fa-heart"></i></span>#}
+{#                </a>#}
+                <small>#{{ note.id }} created at {{ note.dateadd|date('d.m.Y') }}</small>
+            </div>
+        </nav>
+    </div>
+    <div class="media-right">
+        <button class="delete"></button>
+    </div>
+</article>
+{% endfor %}
+
+
+
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}
