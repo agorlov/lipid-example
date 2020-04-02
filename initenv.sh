@@ -114,7 +114,7 @@ lxc-attach -n "${LXC_NAME}" -- su - ${USER} -c "cd /www && composer install"
 {
 cat <<EOFNGINX
 server {
-    listen 8000;
+    listen 80;
     server_name ${LXC_NAME};
     fastcgi_read_timeout 600;
     access_log /var/log/nginx/access.log;
@@ -151,6 +151,7 @@ EOFNGINX
 } | lxc-attach -n "${LXC_NAME}" -- bash -c "cat - >> /etc/nginx/sites-available/${LXC_NAME}"
 
 lxc-attach -n "${LXC_NAME}" -- ln -s /etc/nginx/sites-available/${LXC_NAME} /etc/nginx/sites-enabled/
+lxc-attach -n "${LXC_NAME}" -- rm /etc/nginx/sites-enabled/default
 
 # change www-data in container to this user
 lxc-attach -n "${LXC_NAME}" -- sed -i "/^user www-data/s/user www-data/user ${USER}/"\
@@ -212,11 +213,11 @@ LXC_IP=`lxc-info -n ${LXC_NAME} -iH`
 echo
 echo "======================= ALL DONE! ==========================="
 echo
-echo "Open in browser: http://${LXC_IP}:8000"
+echo "Open in browser: http://${LXC_IP}"
 echo
 echo "To start adminer run:"
 echo
-echo "    http://${LXC_IP}:8000/adminer"
+echo "    http://${LXC_IP}/adminer"
 echo
 echo "For production, or to open app for all, forward port:"
-echo "    $ sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 8000 -j DNAT --to-destination ${LXC_IP}:8000"
+echo "    $ sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 8000 -j DNAT --to-destination ${LXC_IP}:80"

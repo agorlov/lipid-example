@@ -11,6 +11,7 @@ require_once './vendor/autoload.php';
 use ExampleApp\ActLogin;
 use ExampleApp\ActLogout;
 use ExampleApp\ActNote;
+use ExampleApp\ActNoteRemoved;
 use ExampleApp\ActNotes;
 use Lipid\App\ApplicationStd;
 use Lipid\Response\RespStd;
@@ -25,9 +26,7 @@ error_reporting(E_ALL);
         '/login' => new ActLogin(),
         '/logout' => new ActLogout(),
         '/note' => new ActNote(),
-        // '/create' => new ActCreateNote(),
-        // '/edit' => new ActEditNote(),
-        // '/notes' => new ActNotes(),
+        '/remove' => new ActNoteRemoved(),
     ],
     new RespStd
 ))->start();
