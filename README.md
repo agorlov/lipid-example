@@ -9,9 +9,8 @@ With template engine ``Twig``.
 ### Features
 
 - login/logout
-- add note
+- add/edit/view note
 - remove note
-@todo #1 Remove note action
 - upload image
 @todo #1 Upload image
 - upload file
