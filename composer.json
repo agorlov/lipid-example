@@ -14,7 +14,9 @@
         }
     ],
     "require": {
-        "agorlov/lipid": "master@dev"
+        "agorlov/lipid": "master@dev",
+        "ext-json": "*",
+        "ext-pdo": "*"
     },
     "repositories": [
         {

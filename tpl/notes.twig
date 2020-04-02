@@ -55,7 +55,7 @@
         </nav>
     </div>
     <div class="media-right">
-        <button class="delete"></button>
+        <button class="delete js-remove-note" data-note-id="{{ note.id }}"></button>
     </div>
 </article>
 {% endfor %}
@@ -65,5 +65,36 @@
 {% endblock %}
 
 {% block javascript %}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    // @todo #5 transform to js-module
+    $('.js-remove-note').on('click', (event) => {
+        // @todo #5 Ask for remove confirmation
+        console.log('remove', event);
+        console.log('id',  $(event.target).data('note-id') );
+        $.post(
+            "/remove",
+            { 'id' : $(event.target).data('note-id') },
+            'json'
+        ).done(
+            (data) => {
+                let resp = JSON.parse(data);
+                console.log('data', resp)
+                if (resp.result == 'ok') {
+                    $(event.target).closest('article').hide('slow');
+                } else if (resp.result == 'error') {
+                    alert('Some error: ' + resp.message);
+                } else {
+                    alert("Error in console.");
+                    console.log(resp);
+                }
+            }
+        ).fail(function(jqXHR, textStatus) {
+                alert("Remove equest failed, try again or open console for debug. textStatus=" + textStatus);
+                console.log(jqXHR);
+            }
+        );
 
+    });
+</script>
 {% endblock %}
