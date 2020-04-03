@@ -11,13 +11,15 @@ With template engine ``Twig``.
 - login/logout
 - add note
 - remove note
-@todo #1 Remove note action
 - upload image
 @todo #1 Upload image
 - upload file
 @todo #1 Upload file in formats: zip/pdf/xlsx/docx
 - search note
-@todo #1 Search notes screen and form
+- @todo #8 public and private notes
+- @todo #8 notes list with pages
+- @todo #8 login screen and logout link
+- @todo #8 need note remove confirm
 
 ### Installation
 

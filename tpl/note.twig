@@ -5,8 +5,8 @@
 
 <nav class="breadcrumb" aria-label="breadcrumbs">
     <ul>
-        <li><a href="/">Заметки</a></li>
-        <li class="is-active"><a href="/note">{{ title|default('Новая') }}</a></li>
+        <li><a href="/">Notes</a></li>
+        <li class="is-active"><a href="/note">{{ title|default('New') }}</a></li>
     </ul>
 </nav>
 
@@ -21,7 +21,7 @@
 
     <div class="field">
         <div class="control">
-            <input type="text" name="title" value="{{ title }}" placeholder="Заголовок заметки" class="input">
+            <input type="text" name="title" value="{{ title }}" placeholder="Note title" class="input">
         </div>
     </div>
 
@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <input type="submit" value="Сохранить" class="button is-primary">
+    <input type="submit" value="Save" class="button is-primary">
 </form>
 {% endblock %}
 
