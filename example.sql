@@ -55,3 +55,6 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2019-06-05 23:46:25
+
+ALTER TABLE `notes`
+    ADD FULLTEXT `title_text` (`title`, `text`);

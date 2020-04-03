@@ -16,7 +16,10 @@ With template engine ``Twig``.
 - upload file
 @todo #1 Upload file in formats: zip/pdf/xlsx/docx
 - search note
-@todo #1 Search notes screen and form
+- @todo #8 public and private notes
+- @todo #8 notes list with pages
+- @todo #8 login screen and logout link
+- @todo #8 need note remove confirm
 
 ### Installation
 

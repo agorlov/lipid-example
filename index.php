@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Object MVC Example app
+ * Object MVC Example app - Personal Notes
  *
  * @author Alexandr Gorlov <a.gorlov@gmail.com>
  */

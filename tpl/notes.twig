@@ -3,9 +3,22 @@
 
 {% block container %}
 
+<form action="" method="get">
+    <div class="field has-addons">
+        <div class="control">
+            <input class="input" type="text" name="q" value="{{ q }}" placeholder="Search note">
+        </div>
+        <div class="control">
+            <button class="button is-info">
+                Search
+            </button>
+        </div>
+    </div>
+</form>
+
 <nav class="breadcrumb" aria-label="breadcrumbs">
     <ul>
-        <li class="is-active"><a href="/">Заметки</a></li>
+        <li class="is-active"><a href="/">Notes</a></li>
     </ul>
 </nav>
 
@@ -13,10 +26,10 @@
 
 <div class="level">
     <div class="level-left">
-        <h1 class="title">Заметки</h1>
+        <h1 class="title">{% if q %}Search for notes{% else %}Notes{% endif %}</h1>
     </div>
     <div class="level-right">
-        <a href="/note" class="button is-link is-light">Написать заметку</a>
+        <a href="/note" class="button is-link is-light">Write a note</a>
     </div>
 </div>
 
@@ -58,6 +71,9 @@
         <button class="delete js-remove-note" data-note-id="{{ note.id }}"></button>
     </div>
 </article>
+{% else %}
+    <!-- @todo #8 add styles to no result message -->
+    <p>I searched, but I didn't find any notes, so you can <a href="/note">create a new one</a>.</p>
 {% endfor %}
 
 
@@ -89,7 +105,7 @@
                     console.log(resp);
                 }
             }
-        ).fail(function(jqXHR, textStatus) {
+        ).fail((jqXHR, textStatus) => {
                 alert("Remove equest failed, try again or open console for debug. textStatus=" + textStatus);
                 console.log(jqXHR);
             }
