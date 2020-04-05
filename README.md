@@ -11,8 +11,7 @@ With template engine ``Twig``.
 - login/logout
 - add/edit/view note
 - remove note
-- upload image
-@todo #1 Upload image
+- paste image to attach it to note (upload it)
 - upload file
 @todo #1 Upload file in formats: zip/pdf/xlsx/docx
 - search note
