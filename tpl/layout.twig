@@ -10,11 +10,45 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
+    {# mono-font Droid+Sans+Mono #}
+    <link href="http://allfont.ru/allfont.css?fonts=droid-sans-mono" rel="stylesheet" type="text/css" />
+    <style>
+        body, button, input, select, textarea {
+            font-family: 'Droid Sans Mono', Arial;
+        }
+    </style>
+
     {% block css %}
     {% endblock %}
 </head>
 <body>
 {% block body %}
+
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+
+        <div class="container">
+            <div class="navbar-item has-background-link">
+                <a href="/" class="has-text-white">Notes app</a>
+            </div>
+            <form action="" method="get" class="navbar-item">
+                <div class="field has-addons">
+                    <div class="control">
+                        <input class="input" type="text" name="q" value="{{ q }}" placeholder="[ Search note ]">
+                    </div>
+                </div>
+            </form>
+
+
+            <div class="navbar-end">
+
+                <div class="navbar-item">
+                    <a href="/note" class="button is-link is-light">[ New note ]</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
     <section class="section">
         <div class="container">
             {% block container %}

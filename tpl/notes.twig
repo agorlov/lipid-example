@@ -3,50 +3,24 @@
 
 {% block container %}
 
-<form action="" method="get">
-    <div class="field has-addons">
-        <div class="control">
-            <input class="input" type="text" name="q" value="{{ q }}" placeholder="Search note">
-        </div>
-        <div class="control">
-            <button class="button is-info">
-                Search
-            </button>
-        </div>
-    </div>
-</form>
-
 <nav class="breadcrumb" aria-label="breadcrumbs">
     <ul>
-        <li class="is-active"><a href="/">Notes</a></li>
+        <li class="is-active"><a href="/">{% if q %}Here are the search results{% else %}Notes{% endif %}</a></li>
     </ul>
 </nav>
-
-
-
-<div class="level">
-    <div class="level-left">
-        <h1 class="title">{% if q %}Search for notes{% else %}Notes{% endif %}</h1>
-    </div>
-    <div class="level-right">
-        <a href="/note" class="button is-link is-light">Write a note</a>
-    </div>
-</div>
 
 
 {% for note in notes %}
 <article class="media">
     <figure class="media-left">
-        <p class="image is-64x64">
-            <img src="https://bulma.io/images/placeholders/128x128.png">
-        </p>
+        #{{ note.id }}
     </figure>
 
     <div class="media-content">
         <div class="content">
             <a href="/note?id={{ note.id }}" class="has-text-dark">
             <p>
-                <strong>{{ note.title }}</strong> {#<small>@johnsmith</small>#}
+                <strong class="has-text-info">{{ note.title }}</strong> {#<small>@johnsmith</small>#}
                 <br>
                 {{ (note.text|striptags)|slice(0,100) }}
             </p>
@@ -54,16 +28,7 @@
         </div>
         <nav class="level is-mobile">
             <div class="level-left">
-{#                <a class="level-item">#}
-{#                    <span class="icon is-small"><i class="fas fa-reply"></i></span>#}
-{#                </a>#}
-{#                <a class="level-item">#}
-{#                    <span class="icon is-small"><i class="fas fa-retweet"></i></span>#}
-{#                </a>#}
-{#                <a class="level-item">#}
-{#                    <span class="icon is-small"><i class="fas fa-heart"></i></span>#}
-{#                </a>#}
-                <small>#{{ note.id }} created at {{ note.dateadd|date('d.m.Y') }}</small>
+                <span class="is-grey-lighter">created at {{ note.dateadd|date('d.m.Y') }}</span>
             </div>
         </nav>
     </div>
