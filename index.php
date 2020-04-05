@@ -13,6 +13,7 @@ use ExampleApp\ActLogout;
 use ExampleApp\ActNote;
 use ExampleApp\ActNoteRemoved;
 use ExampleApp\ActNotes;
+use ExampleApp\ActPastedImage;
 use Lipid\App\ApplicationStd;
 use Lipid\Response\RespStd;
 
@@ -27,6 +28,10 @@ error_reporting(E_ALL);
         '/logout' => new ActLogout(),
         '/note' => new ActNote(),
         '/remove' => new ActNoteRemoved(),
+        '/paste-image' => new ActPastedImage(
+            __DIR__ . '/public/files',
+            '/public/files'
+        )
     ],
     new RespStd
 ))->start();
