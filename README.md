@@ -13,7 +13,6 @@ With template engine ``Twig``.
 - remove note
 - paste image to attach it to note (upload it)
 - upload file
-@todo #1 Upload file in formats: zip/pdf/xlsx/docx
 - search note
 - @todo #8 public and private notes
 - @todo #8 notes list with pages
