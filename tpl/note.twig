@@ -10,11 +10,10 @@
     </ul>
 </nav>
 
-<form method="POST" action="">
+<form method="POST" action="" enctype="multipart/form-data">
 
     {%  if errorMsg %}
         <div class="notification is-warning is-light">
-            <button class="delete"></button>
             {{ errorMsg }}
         </div>
     {% endif %}
@@ -26,26 +25,36 @@
     </div>
 
 
+
     <div class="field">
         <div class="control">
             <textarea name="text" class="textarea is-info" rows="25">{{ text }}</textarea>
         </div>
     </div>
 
+    <div class="field" style="border-radius: 4px; border: 1px solid #3298dc; padding: calc(.75em - 1px);">
+
+        <p style="margin-bottom: .75em;">Attached files list shuld be here.</p>
+
+        <div class="field">
+            <div class="control">
+                <input type="file" id="upload-inp" name="upload-inp" multiple>
+            </div>
+        </div>
+    </div>
+
     <input type="submit" value="[ Save ]" class="button is-info">
+
 </form>
 {% endblock %}
 
 {% block javascript %}
+{# paste image #}
+<script src="/public/js/pasteimage.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
-        $notification = $delete.parentNode;
-
-        $delete.addEventListener('click', () => {
-            $notification.parentNode.removeChild($notification);
-        });
-    });
-});
+    new AGTextareaUploader(
+        document.getElementById('note-edit'),
+        '/paste-image'
+    ).run();
 </script>
 {% endblock %}
