@@ -33,12 +33,22 @@
     </div>
 
     <div class="field" style="border-radius: 4px; border: 1px solid #3298dc; padding: calc(.75em - 1px);">
+        <ul>
+        {% for file in files %}
+            <li>
+                <a href="{{ file.href }}">{{ file.basename }}</a>
+                <button class="delete js-remove-attach" data-note-id="{{ id }}" data-filename="{{ file.basename }}"></button>
+            </li>
+        {% else %}
+            <li>No attachments</li>
+        {% endfor %}
+        </ul>
 
-        <p style="margin-bottom: .75em;">Attached files list shuld be here.</p>
+        <p style="margin-bottom: .75em;"></p>
 
         <div class="field">
             <div class="control">
-                <input type="file" id="upload-inp" name="upload-inp" multiple>
+                <input type="file" id="upload-inp" name="upload-inp">
             </div>
         </div>
     </div>
@@ -56,13 +66,44 @@
 {% endblock %}
 
 {% block javascript %}
-{# paste image #}
-<script src="/public/js/pasteimage.js"></script>
+{# #}
 <script>
-    new AGTextareaUploader(
-        document.getElementById('note-edit'),
-        '/paste-image'
-    ).run();
+    // @todo #28 transform to js-module
+    $('.js-remove-attach').on('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (! confirm("Remove file?")) {
+            return;
+        }
+
+        console.log('id',  $(event.target).data('note-id') );
+        console.log('filename',  $(event.target).data('filename') );
+
+        $.post(
+            "/remove-attach",
+            {
+                'noteId' : $(event.target).data('note-id'),
+                'filename' : $(event.target).data('filename')
+            },
+            'json'
+        ).done(
+            (data) => {
+                let resp = JSON.parse(data);
+                console.log('data', resp);
+                if (resp == 'ok') {
+                    $(event.target).closest('li').hide('slow');
+                } else {
+                    alert("Error: " + resp);
+                    console.log(resp);
+                }
+            }
+        ).fail((jqXHR, textStatus) => {
+                alert("Remove attach request failed, try again or open console for debug. textStatus=" + textStatus);
+                console.log(jqXHR);
+            }
+        );
+    });
 </script>
 
 <script src="public/js/pasteimage.js"></script>
