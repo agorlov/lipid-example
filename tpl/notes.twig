@@ -3,43 +3,43 @@
 
 {% block container %}
 
-<nav class="breadcrumb" aria-label="breadcrumbs">
-    <ul>
-        <li class="is-active"><a href="/">{% if q %}Here are the search results{% else %}Notes{% endif %}</a></li>
-    </ul>
-</nav>
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li class="is-active"><a href="/">{% if q %}Here are the search results{% else %}Notes{% endif %}</a></li>
+        </ul>
+    </nav>
 
 
-{% for note in notes %}
-<article class="media">
-    <figure class="media-left">
-        #{{ note.id }}
-    </figure>
+    {% for note in notes %}
+    <article class="media">
+        <figure class="media-left">
+            #{{ note.id }}
+        </figure>
 
-    <div class="media-content">
-        <div class="content">
-            <a href="/note?id={{ note.id }}" class="has-text-dark">
-            <p>
-                <strong class="has-text-info">{{ note.title }}</strong> {#<small>@johnsmith</small>#}
-                <br>
-                {{ (note.text|striptags)|slice(0,100) }}
-            </p>
-            </a>
-        </div>
-        <nav class="level is-mobile">
-            <div class="level-left">
-                <span class="is-grey-lighter">created at {{ note.dateadd|date('d.m.Y') }}</span>
+        <div class="media-content">
+            <div class="content">
+                <a href="/note?id={{ note.id }}" class="has-text-dark">
+                    <p>
+                        <strong class="has-text-info">{{ note.title }}</strong> {#<small>@johnsmith</small>#}
+                        <br>
+                        {{ (note.text|striptags)|slice(0,100) }}
+                    </p>
+                </a>
             </div>
-        </nav>
-    </div>
-    <div class="media-right">
-        <button class="delete js-remove-note" data-note-id="{{ note.id }}"></button>
-    </div>
-</article>
-{% else %}
-    <!-- @todo #8 add styles to no result message -->
-    <p>I searched, but I didn't find any notes, so you can <a href="/note">create a new one</a>.</p>
-{% endfor %}
+            <nav class="level is-mobile">
+                <div class="level-left">
+                    <span class="is-grey-lighter">created at {{ note.dateadd|date('d.m.Y') }}</span>
+                </div>
+            </nav>
+        </div>
+        <div class="media-right">
+            <button class="delete js-remove-note" data-note-id="{{ note.id }}"></button>
+        </div>
+    </article>
+    {% else %}
+        <!-- @todo #8 add styles to no result message -->
+        <p>I searched, but I didn't find any notes, so you can <a href="/note">create a new one</a>.</p>
+    {% endfor %}
 
 
 
@@ -47,38 +47,38 @@
 
 {% block javascript %}
 <script>
-    {# Remove note #}
-    $('.js-remove-note').on('click', (event) => {
+{# Remove note #}
+$('.js-remove-note').on('click', (event) => {
 
-        // remove confirmation
-        let noteId = $(event.target).data('note-id');
-        if (! confirm("Remove note #" + noteId + "?")) {
-            return;
+    // remove confirmation
+    let noteId = $(event.target).data('note-id');
+    if (! confirm("Remove note #" + noteId + "?")) {
+        return;
+    }
+
+    $.post(
+        "/remove",
+        { 'id' : $(event.target).data('note-id') },
+        'json'
+    ).done(
+        (data) => {
+            let resp = JSON.parse(data);
+            console.log('data', resp)
+            if (resp.result == 'ok') {
+                $(event.target).closest('article').hide('slow');
+            } else if (resp.result == 'error') {
+                alert('Some error: ' + resp.message);
+            } else {
+                alert("Error in console.");
+                console.log(resp);
+            }
         }
+    ).fail((jqXHR, textStatus) => {
+            alert("Remove equest failed, try again or open console for debug. textStatus=" + textStatus);
+            console.log(jqXHR);
+        }
+    );
 
-        $.post(
-            "/remove",
-            { 'id' : $(event.target).data('note-id') },
-            'json'
-        ).done(
-            (data) => {
-                let resp = JSON.parse(data);
-                console.log('data', resp)
-                if (resp.result == 'ok') {
-                    $(event.target).closest('article').hide('slow');
-                } else if (resp.result == 'error') {
-                    alert('Some error: ' + resp.message);
-                } else {
-                    alert("Error in console.");
-                    console.log(resp);
-                }
-            }
-        ).fail((jqXHR, textStatus) => {
-                alert("Remove equest failed, try again or open console for debug. textStatus=" + textStatus);
-                console.log(jqXHR);
-            }
-        );
-
-    });
+});
 </script>
 {% endblock %}

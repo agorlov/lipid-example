@@ -16,6 +16,18 @@
         body, button, input, select, textarea {
             font-family: 'Droid Sans Mono', Arial;
         }
+
+        @media screen and (min-width: 1024px) {
+            .container {
+                max-width: 860px;
+            }
+        }
+
+        @media screen and (min-width: 1408px) {
+            .container {
+                max-width: 860px;
+            }
+        }
     </style>
 
     {% block css %}
@@ -60,7 +72,7 @@
         <div class="content has-text-centered">
             <p>
                 <small>
-                This simple <b>Notes app</b> demonstrate how to construct web apps in <a href="https://github.com/agorlov/lipid">Lipid php-framework</a>.<br>
+                This simple <b>Notes app</b> demonstrate how to construct web apps with <a href="https://github.com/agorlov/lipid">Lipid php-framework</a>.<br>
                 Tech stack: LXC, PHP, Lipid, Twig, Bulma.<br>
                 by <a href="https://github.com/agorlov">Alexandr Gorlov</a> 2020
                 </small>
