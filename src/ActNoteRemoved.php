@@ -4,6 +4,7 @@ namespace ExampleApp;
 
 use Lipid\Action;
 use Lipid\Response;
+use Lipid\Response\RespJson;
 use PDO;
 
 /**
@@ -27,12 +28,11 @@ final class ActNoteRemoved implements Action
     public function handle(Response $resp): Response
     {
         if (! isset($this->POST['id'])) {
-            return // @todo #5 use new RespJson(...)
-                $resp->withBody(json_encode(['result' => 'error', 'message' => 'need POST[id] to remove note']));
+            return new RespJson(['result' => 'error', 'message' => 'need POST[id] to remove note']);
         }
 
         $this->db->exec("DELETE FROM notes WHERE id=" . $this->db->quote($this->POST['id']));
 
-        return $resp->withBody(json_encode(['result' => 'ok']));
+        return new RespJson(['result' => 'ok']);
     }
 }

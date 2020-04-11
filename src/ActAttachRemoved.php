@@ -4,6 +4,7 @@ namespace ExampleApp;
 
 use Lipid\Action;
 use Lipid\Response;
+use Lipid\Response\RespJson;
 
 
 /**
@@ -35,20 +36,20 @@ final class ActAttachRemoved implements Action
     {
         $dstDir = 'public/files/' . (int)$this->POST['noteId'];
         if (!is_dir($dstDir)) {
-            return $resp->withBody(json_encode("Note dir not exists: $dstDir"));
+            return new RespJson("Note dir not exists: $dstDir");
         }
 
         $dstPath = "$dstDir/" . basename($this->POST['filename']);
 
         if (!is_file($dstPath)) {
-            return $resp->withBody(json_encode("Note file is not exists: $dstPath" . $this->POST['filename']));
+            return new RespJson("Note file is not exists: $dstPath" . $this->POST['filename']);
         }
 
         $res = unlink($dstPath);
         if (!$res) {
-            return $resp->withBody(json_encode("Error deleting: file=$dstPath"));
+            return new RespJson("Error deleting: file=$dstPath");
         }
 
-        return $resp->withBody(json_encode("ok"));
+        return new RespJson("ok");
     }
 }
