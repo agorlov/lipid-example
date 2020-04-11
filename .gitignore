@@ -2,4 +2,5 @@
 /cache/**
 /.composer/**
 /.idea/**
+/public/files/**
 

@@ -66,6 +66,11 @@ final class ActNote implements Action
             }
         }
 
+        // textarea rows - minimum 25 rows
+        // if text is longer, then rows count plus 7
+        $rowsCount = substr_count($note['text'], "\n") + 1;
+        $rowsCount += 7;
+        $note['rowsCount'] = ($rowsCount < 25) ? 25 : $rowsCount;
 
         return $resp->withBody(
             $this->tpl->render($note)

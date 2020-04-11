@@ -28,8 +28,7 @@
 
     <div class="field">
         <div class="control">
-            {# @todo #31 textarea rows count text row count plus ten or 25 if no text #}
-            <textarea name="text" class="textarea is-info" id="note-edit" rows="25">{{ text }}</textarea>
+            <textarea name="text" class="textarea is-info" id="note-edit" rows="{{ rowsCount }}">{{ text }}</textarea>
         </div>
     </div>
 
