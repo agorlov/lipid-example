@@ -13,8 +13,6 @@ use Traversable;
  * Using mysql fulltext-search (without morphology)
  * Search any of requested words
  *
- * @todo #8 try to use Porter stemmer_ru and _en to make better search
- *
  * @author Alexandr Gorlov <a.gorlov@gmail.com>
  */
 class NotesSearch implements Notes
