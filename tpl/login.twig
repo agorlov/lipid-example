@@ -1,0 +1,64 @@
+{# Login page #}
+
+{% extends 'layout.twig' %}
+
+{% block container %}
+
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="/">Notes</a></li>
+            <li class="is-active"><a href="/login">Login</a></li>
+        </ul>
+    </nav>
+
+
+
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+                <div style="margin-bottom: 3rem;">
+                    <h1>Login for owner of notes</h1>
+                </div>
+
+                <form method="POST" action="" enctype="multipart/form-data">
+
+                    {% if errorMsg %}
+                        <div class="notification is-warning is-light">
+                            {{ errorMsg }}
+                        </div>
+                    {% endif %}
+
+                    <div class="field">
+                        <label class="label">Owner secret</label>
+                        <p class="control has-icons-left">
+                            <input class="input" type="password" name="passw" placeholder="Password">
+                            <span class="icon is-small is-left">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                        </p>
+                    </div>
+
+
+
+                    <input type="submit" value="[ Login ]" class="button is-info">
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+{# #}
+
+</script>
+
+<script src="public/js/pasteimage.js"></script>
+<script>
+    new AGTextareaUploader(
+        document.getElementById('note-edit'),
+        '/paste-image'
+    ).run();
+</script>
+{% endblock %}
