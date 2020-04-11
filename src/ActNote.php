@@ -50,6 +50,7 @@ final class ActNote implements Action
             $row = $r->fetch();
             if ($row !== false) {
                 $note = $row;
+                $note['files'] = $this->attachments((int) $noteId);
             }
         }
 
@@ -94,6 +95,19 @@ final class ActNote implements Action
             $this->db->query("INSERT INTO notes SET $sqlSets");
             return $this->db->lastInsertId();
         }
+    }
+
+    private function attachments($noteId) : array
+    {
+        $dstDir = 'public/files/' . $noteId;
+        $files = [];
+        foreach (glob("$dstDir/*") as $file) {
+            $files[] = [
+                'basename' => basename($file),
+                'href' => "/$file"
+            ];
+        }
+        return $files;
     }
 
     // @todo #7 move attach function to separate page
