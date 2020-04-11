@@ -14,10 +14,9 @@ With template engine ``Twig``.
 - paste image to attach it to note (upload it)
 - upload file
 - search note
-- @todo #8 public and private notes
 - @todo #8 notes list with pages
 - @todo #8 login screen and logout link
-- @todo #8 need note remove confirm
+
 
 ### Installation
 
