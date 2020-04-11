@@ -47,9 +47,10 @@
 
 {% block javascript %}
 <script>
-    {# #}
+    {# Remove note #}
     $('.js-remove-note').on('click', (event) => {
-        // @todo #5 Ask for remove confirmation
+
+        // remove confirmation
         let noteId = $(event.target).data('note-id');
         if (! confirm("Remove note #" + noteId + "?")) {
             return;
