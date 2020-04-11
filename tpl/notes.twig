@@ -47,11 +47,14 @@
 
 {% block javascript %}
 <script>
-    // @todo #5 transform to js-module
+    {# #}
     $('.js-remove-note').on('click', (event) => {
         // @todo #5 Ask for remove confirmation
-        console.log('remove', event);
-        console.log('id',  $(event.target).data('note-id') );
+        let noteId = $(event.target).data('note-id');
+        if (! confirm("Remove note #" + noteId + "?")) {
+            return;
+        }
+
         $.post(
             "/remove",
             { 'id' : $(event.target).data('note-id') },
