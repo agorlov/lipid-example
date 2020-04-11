@@ -27,7 +27,7 @@ final class ActNoteRemoved implements Action
     public function handle(Response $resp): Response
     {
         if (! isset($this->POST['id'])) {
-            return // @todo use new RespJson(...)
+            return // @todo #5 use new RespJson(...)
                 $resp->withBody(json_encode(['result' => 'error', 'message' => 'need POST[id] to remove note']));
         }
 
