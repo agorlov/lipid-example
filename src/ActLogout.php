@@ -4,12 +4,15 @@ namespace ExampleApp;
 
 use Lipid\Action;
 use Lipid\Action\ActRedirect;
-use Lipid\Request;
-use Lipid\Request\RqGET;
 use Lipid\Response;
 use Lipid\Session;
 use Lipid\Session\AppSession;
 
+/**
+ * Logout action
+ *
+ * @author Alexandr Gorlov <a.gorlov@gmail.com>
+ */
 final class ActLogout implements Action
 {
     private $session;
@@ -25,13 +28,10 @@ final class ActLogout implements Action
 
     public function handle(Response $resp): Response
     {
-        if ($this->session->exists('login')) { //  login and password ok
-            $this->session->unset('login');
-            return $this->redirect->handle($resp);
+        if ($this->session->exists('isOwner')) {
+            $this->session->unset('isOwner'); // unset owner flag
         }
 
-        return $resp->withBody(
-            "You are not logged in."
-        );
+        return $this->redirect->handle($resp);
     }
 }
