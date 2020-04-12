@@ -4,6 +4,7 @@ namespace ExampleApp;
 
 use Exception;
 use Lipid\Action;
+use Lipid\Action\ActRedirect;
 use Lipid\Response;
 use Lipid\Session\AppSession;
 use Lipid\Tpl;
@@ -18,15 +19,14 @@ final class ActNote implements Action
     private $GET;
     private $POST;
     private $SERVER;
-    private $FILES;
-    private $tpl;
+    private $tplEdit;
+    private $tplView;
     private $db;
 
     public function __construct(
         array $GET = null,
         array $POST = null,
         array $SERVER = null,
-        array $FILES = null,
         Tpl $tplEdit = null,
         Tpl $tplView = null,
         PDO $db = null
@@ -34,7 +34,6 @@ final class ActNote implements Action
         $this->GET = $GET ?? $_GET;
         $this->POST = $POST ?? $_POST;
         $this->SERVER = $SERVER ?? $_SERVER;
-        $this->FILES = $FILES ?? $_FILES;
         $this->tplEdit = $tpl ?? new AppTwig('note.twig');
         $this->tplView = $tpl ?? new AppTwig('noteview.twig');
         $this->db = $db ?? new AppPDO();
@@ -61,17 +60,16 @@ final class ActNote implements Action
             }
         }
 
-        // @todo #7 move POST handling function to separate Object
-        //  this class is too large
+        // save note
         if ($this->SERVER['REQUEST_METHOD'] == 'POST') {
             if (! (new AppSession())->exists('isOwner')) {
                 throw new Exception("You are not an owner, login first!");
             }
 
+
             try {
-                $noteId = $this->handlePost($this->POST);
-                $this->handleUpload($this->FILES, $noteId);
-                return (new Action\ActRedirect("/note/?id=$noteId"))->handle($resp);
+                $noteId = (new NoteSaved())->save();
+                return (new ActRedirect("/note/?id=$noteId"))->handle($resp);
             } catch (Exception $ex) {
                 $note['errorMsg'] = $ex->getMessage();
                 $note['title'] = $this->POST['title'];
@@ -94,30 +92,7 @@ final class ActNote implements Action
         }
     }
 
-    private function handlePost(array $POST): int
-    {
-        // это новая заметка - создадим ее
-        if (!(isset($POST['title']) && trim($POST['title'] != ''))) {
-            throw new Exception('Заголовок заметки не передан (POST[title])', 77);
-        }
 
-        if (!(isset($POST['text']) && trim($POST['text'] != ''))) {
-            throw new Exception('Текст заметки не передан (POST[text])', 77);
-        }
-
-        $qTitle = $this->db->quote($POST['title']);
-        $qText = $this->db->quote($POST['text']);
-
-        $sqlSets = "title=$qTitle, text=$qText, dateadd=now()";
-        if ($this->GET['id']) {
-            $qId = $this->db->quote($this->GET['id']);
-            $this->db->query("UPDATE notes SET $sqlSets WHERE id=$qId");
-            return $this->GET['id'];
-        } else {
-            $this->db->query("INSERT INTO notes SET $sqlSets");
-            return $this->db->lastInsertId();
-        }
-    }
 
     private function attachments($noteId) : array
     {
@@ -130,29 +105,5 @@ final class ActNote implements Action
             ];
         }
         return $files;
-    }
-
-
-    private function handleUpload($FILES, $noteId)
-    {
-        if (!(isset($FILES['upload-inp']) && $FILES['upload-inp']['error'] == 0)) {
-            return;
-        }
-
-        $dstDir = 'public/files/' . $noteId;
-        if (! is_dir($dstDir)) {
-            if (!mkdir($dstDir)) {
-                throw new Exception("Culdn't create dir=$dstDir");
-            }
-        }
-
-        $uploadResult = move_uploaded_file(
-            $FILES['upload-inp']['tmp_name'],
-            $dstDir . '/' . $FILES['upload-inp']['name']
-        );
-
-        if ($uploadResult === false) {
-            throw new Exception("Culdn't save uploaded file={$FILES['upload-inp']['name']}");
-        }
     }
 }
