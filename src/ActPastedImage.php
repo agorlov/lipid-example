@@ -10,41 +10,60 @@ use SplFileObject;
 /**
  * Attached to note image
  *
- * @todo #6 Add note id-prefix dir: public/files/123/asdfasdf.jpg
- *
  * @link https://github.com/agorlov/textarea-uploader
  * @author Alexandr Gorlov <a.gorlov@gmail.com>
  */
 final class ActPastedImage implements Action
 {
 
-    /** @var \SplFileObject */
+    /** @var SplFileObject */
     private $POSTBody;
     private $uploadDir;
     private $webDir;
+    private $GET;
 
     /**
      * Constructor.
      *
-     * @param string         $uploadDir directory to store uploaded images
-     * @param string         $webDir
-     * @param \SplFileObject $POSTBody post-body contains binary image
+     * @param string        $uploadDir directory to store uploaded images
+     * @param string        $webDir
+     * @param SplFileObject $POSTBody post-body contains binary image
      */
     public function __construct(
         string $uploadDir = './files',
         string $webDir = '/files',
-        \SplFileObject $POSTBody = null
+        SplFileObject $POSTBody = null,
+        array $GET = null
     ) {
         $this->uploadDir = $uploadDir;
         $this->webDir = $webDir;
         $this->POSTBody = $POSTBody ?? new SplFileObject('php://input');
+        $this->GET = $GET ?? $_GET;
     }
 
 
     public function handle(Response $resp): Response
     {
+        // where to save
         $fileName = uniqid() . ".png";
-        $dst = new \SplFileObject($this->uploadDir . "/" . $fileName, 'w+');
+        if (isset($this->GET['noteId']) && $this->GET['noteId'] > 0) {
+            $dstPath = $this->uploadDir . "/{$this->GET['noteId']}/" . $fileName;
+            $dstWebPath = $this->webDir . "/{$this->GET['noteId']}/" . $fileName;
+        } else {
+            $dstPath = $this->uploadDir . "/" . $fileName;
+            $dstWebPath = $this->webDir . "/" . $fileName;
+        }
+
+        // create dir
+        $dstDir = dirname($dstPath);
+        if (!is_dir($dstDir)) {
+            if (!mkdir($dstDir)) {
+                throw new Exception("Culdn't create dir=$dstDir");
+            }
+        }
+
+        // save image
+        $dst = new SplFileObject($dstPath, 'w+');
 
         while (!$this->POSTBody->eof()) {
             $dst->fwrite(
@@ -59,6 +78,6 @@ final class ActPastedImage implements Action
             throw new Exception("Image size is 0 bytes. (in POST body)");
         }
 
-        return $resp->withBody("{$this->webDir}/{$fileName}");
+        return $resp->withBody($dstWebPath);
     }
 }
