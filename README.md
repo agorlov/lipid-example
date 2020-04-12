@@ -15,7 +15,6 @@ With template engine ``Twig``.
 - upload file
 - search note
 - @todo #8 notes list with pages
-- @todo #8 login screen and logout link
 
 
 ### Installation
@@ -23,7 +22,7 @@ With template engine ``Twig``.
 1. Create database ``lipidexample``
 2. Grant access:
 ```sql
-GRANT ALL PRIVILEGES ON lipidexample.* TO lipidexample@'%' IDENTIFIED BY 'lipidexample';
+GRANT ALL PRIVILEGES ON example.* TO example@'%' IDENTIFIED BY 'example';
 ```
 2. Init it with ``example.sql`` data
 3. Update ``creds.php`` (if they differ from default)
