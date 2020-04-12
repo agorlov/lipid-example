@@ -52,10 +52,15 @@
 
 
             <div class="navbar-end">
-
-                <div class="navbar-item">
-                    <a href="/note" class="button is-link is-light">[ New note ]</a>
-                </div>
+                {%  if IS_OWNER %}
+                    <div class="navbar-item">
+                        <a href="/note" class="button is-link is-light">[ New note ]</a>
+                    </div>
+                {% else %}
+                    <div class="navbar-item">
+                        <a href="/login" class="button is-link is-light">[ Login ]</a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </nav>

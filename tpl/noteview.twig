@@ -1,0 +1,43 @@
+{# Note edit and view #}
+{% extends 'layout.twig' %}
+
+{% block container %}
+
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="/">Notes</a></li>
+            <li class="is-active"><a href="/note">{{ title }}</a></li>
+        </ul>
+    </nav>
+
+    <div class="field" style="border-radius: 4px; border: 1px solid #3298dc; padding: calc(.75em - 1px);">
+        <div class="control">
+            {{ title }}
+        </div>
+    </div>
+
+    <div class="field" style="border-radius: 4px; border: 1px solid #3298dc; padding: calc(.75em - 1px);">
+        <div class="control">
+            {{ text }}
+        </div>
+    </div>
+
+    <div class="field" style="border-radius: 4px; border: 1px solid #3298dc; padding: calc(.75em - 1px);">
+        <ul>
+            {% for file in files %}
+                <li>
+                    <a href="{{ file.href }}">{{ file.basename }}</a>
+                    <button class="delete js-remove-attach" data-note-id="{{ id }}"
+                            data-filename="{{ file.basename }}"></button>
+                </li>
+            {% else %}
+                <li>No attachments</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

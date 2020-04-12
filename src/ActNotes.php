@@ -33,7 +33,7 @@ final class ActNotes implements Action
             $this->tpl->render(
                 [
                     'q' => $searchQuery,
-                    'notes' => (new NotesSwitch($searchQuery))->list()
+                    'notes' => (new NotesSwitch($searchQuery))->list(),
                 ]
             )
         );

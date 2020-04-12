@@ -14,6 +14,7 @@ use ExampleApp\ActLogout;
 use ExampleApp\ActNote;
 use ExampleApp\ActNoteRemoved;
 use ExampleApp\ActNotes;
+use ExampleApp\ActOwnerAccess;
 use ExampleApp\ActPastedImage;
 use Lipid\App\ApplicationStd;
 use Lipid\Response\RespStd;
@@ -29,12 +30,12 @@ setlocale(LC_ALL,'C.UTF-8');
         '/login' => new ActLogin(),
         '/logout' => new ActLogout(),
         '/note' => new ActNote(),
-        '/remove' => new ActNoteRemoved(),
-        '/paste-image' => new ActPastedImage(
+        '/remove' => new ActOwnerAccess(new ActNoteRemoved()),
+        '/paste-image' => new ActOwnerAccess(new ActPastedImage(
             __DIR__ . '/public/files',
             '/public/files'
-        ),
-        '/remove-attach' => new ActAttachRemoved(),
+        )),
+        '/remove-attach' => new ActOwnerAccess(new ActAttachRemoved()),
     ],
-    new RespStd
+    new RespStd()
 ))->start();

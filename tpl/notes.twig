@@ -32,9 +32,11 @@
                 </div>
             </nav>
         </div>
+        {% if IS_OWNER %}
         <div class="media-right">
             <button class="delete js-remove-note" data-note-id="{{ note.id }}"></button>
         </div>
+        {% endif %}
     </article>
     {% else %}
         <!-- @todo #8 add styles to no result message -->

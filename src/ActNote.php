@@ -5,6 +5,7 @@ namespace ExampleApp;
 use Exception;
 use Lipid\Action;
 use Lipid\Response;
+use Lipid\Session\AppSession;
 use Lipid\Tpl;
 
 /**
@@ -26,14 +27,16 @@ final class ActNote implements Action
         array $POST = null,
         array $SERVER = null,
         array $FILES = null,
-        Tpl $tpl = null,
-        PDO $pdo = null
+        Tpl $tplEdit = null,
+        Tpl $tplView = null,
+        PDO $db = null
     ) {
         $this->GET = $GET ?? $_GET;
         $this->POST = $POST ?? $_POST;
         $this->SERVER = $SERVER ?? $_SERVER;
         $this->FILES = $FILES ?? $_FILES;
-        $this->tpl = $tpl ?? new AppTwig('note.twig');
+        $this->tplEdit = $tpl ?? new AppTwig('note.twig');
+        $this->tplView = $tpl ?? new AppTwig('noteview.twig');
         $this->db = $db ?? new AppPDO();
     }
 
@@ -43,6 +46,10 @@ final class ActNote implements Action
         $errorMsg = null;
         $note = [];
 
+        // create note page allowed only for notes owner
+        if (! isset($noteId) && ! (new AppSession())->exists('isOwner')) {
+            throw new Exception("You are not an owner, login first!");
+        }
 
         if (isset($noteId)) {
             $qNoteId = $this->db->quote($noteId);
@@ -54,7 +61,13 @@ final class ActNote implements Action
             }
         }
 
+        // @todo #7 move POST handling function to separate Object
+        //  this class is too large
         if ($this->SERVER['REQUEST_METHOD'] == 'POST') {
+            if (! (new AppSession())->exists('isOwner')) {
+                throw new Exception("You are not an owner, login first!");
+            }
+
             try {
                 $noteId = $this->handlePost($this->POST);
                 $this->handleUpload($this->FILES, $noteId);
@@ -72,9 +85,13 @@ final class ActNote implements Action
         $rowsCount += 7;
         $note['rowsCount'] = ($rowsCount < 25) ? 25 : $rowsCount;
 
-        return $resp->withBody(
-            $this->tpl->render($note)
-        );
+        $note['isOwner'] = (new AppSession())->get('isOwner');
+
+        if ($note['isOwner']) {
+            return $resp->withBody($this->tplEdit->render($note));
+        } else {
+            return $resp->withBody($this->tplView->render($note));
+        }
     }
 
     private function handlePost(array $POST): int
@@ -115,7 +132,7 @@ final class ActNote implements Action
         return $files;
     }
 
-    // @todo #7 move attach function to separate page
+
     private function handleUpload($FILES, $noteId)
     {
         if (!(isset($FILES['upload-inp']) && $FILES['upload-inp']['error'] == 0)) {
